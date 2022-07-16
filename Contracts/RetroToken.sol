@@ -1,51 +1,69 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import "./KaseiCoin.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/crowdsale/Crowdsale.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/crowdsale/emission/MintedCrowdsale.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+/**
+ * @title SimpleToken
+ * @dev Very simple ERC20 Token example, where all tokens are pre-assigned to the creator.
+ * Note they can later distribute these tokens as they wish using `transfer` and other
+ * `ERC20` functions.
+ */
+contract RetroToken is Context, Ownable, ERC20 {
+    // admin address
+    address private admin;
+    // set max circulation of tokens: 100000000000000000000
+    uint256 private _maxSupply = 100 * (10**uint256(decimals()));
+    uint256 private _unit = 10**uint256(decimals());
 
-// Have the KaseiCoinCrowdsale contract inherit the following OpenZeppelin:
-// * Crowdsale
-// * MintedCrowdsale
-contract KaseiCoinCrowdsale { // UPDATE THE CONTRACT SIGNATURE TO ADD INHERITANCE
-    
-    // Provide parameters for all of the features of your crowdsale, such as the `rate`, `wallet` for fundraising, and `token`.
-    constructor(
-        // YOUR CODE HERE!
-    ) public Crowdsale(rate, wallet, token) {
-        // constructor can stay empty
+    // only admin account can unlock escrow
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Only admin can mint tokens.");
+        _;
+    }
+
+    /**
+     * @dev Returns max supply of the token.
+     */
+    function maxSupply() public view returns (uint256) {
+        return _maxSupply;
+    }
+
+    /**
+     * @dev Returns single unit of account.
+     */
+    function unit() public view returns (uint256) {
+        return _unit;
+    }
+
+    /**
+     * @dev Constructor that gives _msgSender() all of existing tokens.
+     */
+    constructor(string memory name, string memory symbol) ERC20(name, symbol) {
+        admin = msg.sender;
+        // init circulation
+        mint();
+    }
+
+    function mint() public onlyAdmin {
+        _mint(msg.sender, _maxSupply);
+    }
+
+    // player must approve allowance for escrow/P2EGame contract to use (spender)
+    function approve(address spender, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
+        address owner = _msgSender();
+        amount = _maxSupply; // <-- 100 by default which is max supply
+        // amount = max possible to allow for better player UX (don't have to approve every time)
+        // in-game this means UX doesn't need to include call to approve each play, but will need to check/read allowance
+        // TODO: player approves only amount needed each play
+        _approve(owner, spender, amount);
+        return true;
     }
 }
-
-/*
-contract KaseiCoinCrowdsaleDeployer {
-    // Create an `address public` variable called `kasei_token_address`.
-    // YOUR CODE HERE!
-    // Create an `address public` variable called `kasei_crowdsale_address`.
-    // YOUR CODE HERE!
-
-    // Add the constructor.
-    constructor(
-       // YOUR CODE HERE!
-    ) public {
-        // Create a new instance of the KaseiCoin contract.
-        // YOUR CODE HERE!
-        
-        // Assign the token contract’s address to the `kasei_token_address` variable.
-        // YOUR CODE HERE!
-
-        // Create a new instance of the `KaseiCoinCrowdsale` contract
-        // YOUR CODE HERE!
-            
-        // Aassign the `KaseiCoinCrowdsale` contract’s address to the `kasei_crowdsale_address` variable.
-        // YOUR CODE HERE!
-
-        // Set the `KaseiCoinCrowdsale` contract as a minter
-        // YOUR CODE HERE!
-        
-        // Have the `KaseiCoinCrowdsaleDeployer` renounce its minter role.
-        // YOUR CODE HERE!
-    }
-}
-*/
