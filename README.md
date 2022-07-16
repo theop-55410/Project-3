@@ -6,7 +6,7 @@
 
 - I want to create a P2E game using smart contracts,
 
-- So that players can spend and earn tokens
+- So that players can purchase, bet and win tokens
 
 ## Acceptance Criteria
 
