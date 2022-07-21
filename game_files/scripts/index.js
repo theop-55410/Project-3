@@ -9,6 +9,10 @@ const ctx = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
 
+//
+//const score = document.querySelector("[data-nft-total-score]")
+//
+
 const background = new Image();
 background.src = "../images/space.png";
 

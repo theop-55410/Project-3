@@ -49,6 +49,9 @@ export default class EnemyController {
           this.enemyDeathSound.currentTime = 0;
           this.enemyDeathSound.play();
           enemyRow.splice(enemyIndex, 1);
+          this.score += 1;
+          console.log(this.score);
+          document.getElementById("addOne").innerHTML = `Score: ${this.score}`;
         }
       });
     });
