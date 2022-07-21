@@ -21,6 +21,9 @@ export default class EnemyController {
   moveDownTimer = this.moveDownTimerDefault;
   fireBulletTimerDefault = 100;
   fireBulletTimer = this.fireBulletTimerDefault;
+  //score variable
+  score = 0;
+  //
 
   constructor(canvas, enemyBulletController, playerBulletController) {
     this.canvas = canvas;
