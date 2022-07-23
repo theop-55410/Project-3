@@ -1,52 +1,191 @@
-/*
-Arcade Token
+pragma solidity ^0.8.0;
 
-Instructions:
+import "./RetroToken.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-1. Open Remix, and create a new file called `ArcadeToken.sol`.
+contract P2EGame is Ownable {
+   
+    address admin;
+   
+    uint256 public totalBalance;
+    // this is the erc20 GameToken contract address
+    address constant tokenAddress = 0x8d85a9492605FD5768883AbC5015a2019BED862E; // <-- INSERT DEPLYED ERC20 TOKEN CONTRACT HERE
+    
+    // game data tracking
+    struct Game {
+        uint256 id;
+        address treasury;
+        uint256 amount;
+        bool locked;
+        bool spent;
+    }
+    // map game to balances
+    mapping(address => mapping(uint256 => Game)) public balances;
+    // set-up event for emitting once character minted to read out values
+    //event NewGame(uint256 id, address indexed player);
 
-2. Set the pragma to any version from 0.5.0 to 0.5.17.
+    // only admin account can unlock escrow
+    modifier onlyAdmin {
+        require(msg.sender == admin, "Only admin can unlock escrow.");
+        _;
+    }
 
-3. Define a contract and name it `ArcadeToken`, or choose another name that’s appropriate for your business.
+    /**
+     * @dev Grants `DEFAULT_ADMIN_ROLE`, `MINTER_ROLE` and `PAUSER_ROLE` to the
+     * account that deploys the contract.
+     *
+     * See {ERC20-constructor}.
+     */
+    constructor() {
+        admin = msg.sender;
+       
+    }
 
-4. After you define and name your contract, add the following variables:
+    // retrieve current state of game funds in escrow
+    function startGame(uint256 _gameId, address _treasury, uint256_amount) external returns (uint256) {
+        RetroToken token = RetroToken(tokenaddress);
+        require(token.approve(address(this), _amount), "P2EGame: approval has failed");
+        require(_amount >= 1000000000000000000, "P2EGame: must insert 1 whole token");
+        token.transferFrom(msg.sender, address(this), _amount);
 
-   * An `address payable` called `owner`. Set this to `msg.sender`. This will set you as the contract owner when the contract is deployed.
+        totalBalance += _amount;
 
-   * A `string` called `symbol`. Assign this variable the string “ARCD” or another appropriate ticker symbol, and make sure that it is set to `public`. This will allow other blockchain participants to recognize your token’s ticker symbol.
+        balances[msg.sender][_gameId].amount = _amount;
+        balances[msg.sender][_gameID].treasury = _treasury;
+        balances[msg.sender][_gameID].locked = true;
+        balances[msg.sender][_gameID].spent = false;
+        return token.balanceOf(msg.sender);
+    }
 
-   * Set an `exchange_rate` variable equal to the number of tokens that you want to distribute per wei. Make sure that the variable is a `uint public` type.
+    function gameState(address _player, uint256 _gameID) external view returns (uint256, bool, address) {
+        return ( balances [_player][_gameID].amount, balances[_player][_gameID].locked, balances[_player][_gameID].treasury );
+    }
+        
+   
 
-   * Create a new mapping that associates `address` to `uint`. Name this variable `balances`.
+    // admin starts game
+    // staked tokens get moved to the escrow (this contract)
+    //function createGame(
+      //  address _player,
+        //address _treasury,
+        //uint256 _p,
+        //uint256 _t
+    //) external onlyAdmin returns (bool) {
+        //GameToken token = GameToken(tokenAddress);
+        //unit = token.unit();
 
-5. Now, add a new function named `balance` that is a `public view` and that `returns(uint)`.
+        // approve contract to spend amount tokens
+        // NOTE: this approval method doesn't work and player must approve token contract directly
+        //require(token.approve(address(this), _balance), "P2EGame: approval has failed");
+        // must include amount >1 token (1000000000000000000)
+      //  require(_p >= unit, "P2EGame: must insert 1 whole token");
+        //require(_t >= unit, "P2EGame: must insert more than 1 token");
+        // transfer from player to the contract's address to be locked in escrow
+        //token.transferFrom(msg.sender, address(this), _t);
+        //token.transferFrom(_player, address(this), _p);
 
-   * This function should return the balance of `msg.sender` by accessing the `balances` mapping and using `msg.sender` as the key.
+        // full escrow balance
+        //contractBalance += (_p + _t);
 
-6. Add a new function called `transfer` that accepts the `address recipient` and `uint value` as parameters. Within this function, complete the following steps:
+        // iterate game identifier
+        //gameId++;
 
-   * Subtract the `value` from the balance of `msg.sender` in the `balances` mapping.
+        // init game data
+        //balances[_player][gameId].balance = (_p + _t);
+        //balances[_player][gameId].treasury = _treasury;
+        //balances[_player][gameId].locked = true;
+        //balances[_player][gameId].spent = false;
 
-   * Then, add the `value` to the `recipient` balance in the mapping.
+        //emit NewGame(gameId, _player);
 
-6. Now, add a way for customers to purchase new tokens! To do so, add a `public payable` function called `purchase`. It does not need any parameters. Within the function, complete the following steps:
+        //return true;
+    //}
 
-   * Calculate a new `uint` called `amount` by multiplying `msg.value` by the `exchange_rate`. This will calculate the number of tokens to distribute.
+    // admin unlocks tokens in escrow once game's outcome decided
+    function playerWon(uint256 _gameId, address _player) onlyAdmin external returns (bool) {
+        balances[_player][_gameID].locked = false;
 
-   * Next, add the `amount` to the balance of `msg.sender`.
+             
+        GameToken token = GameToken(tokenAddress);
+        token.transer(_player, balances[_player][_gameID].amount);
+        totalBalance -= balances[_player][_gameID].amount;
+        balances[_player][_gameId].spent = true;
+        return true;
+    }
 
-   * At the end of the function, transfer the `msg.value` to the `owner` address.
 
-7. Finally, add a way for you, the business owner, to create new tokens when you need to. To do so, add a new function called `mint` to the contract by completing the following steps:
+        //maxSupply = token.maxSupply();
 
-   * Use the same parameters that you did for the `transfer` function which you defined earlier.
+        // allows player to withdraw
+        //balances[_player][_gameId].locked = false;
+        // validate winnings
+       // require(
+        //    balances[_player][_gameId].balance < maxSupply,
+        //    "P2EGame: winnings exceed balance in escrow"
+        //);
+        // final winnings = balance locked in escrow + in-game winnings
+        // transfer to player the final winnings
+       // token.transfer(_player, balances[_player][_gameId].balance);
+        // TODO: add post-transfer funcs to `_afterTokenTransfer` to validate transfer
 
-   * At the beginning of the function, require that the `msg.sender` is equal to `owner`. Make sure to include an error message in the `require` statement.
+        // amend escrow balance
+       // contractBalance -= balances[_player][_gameId].balance;
+        // set game balance to spent
+       // balances[_player][_gameId].spent = true;
+       // return true;
+    //}
 
-   * Then, add the `value` (the number of tokens minted) to the recipient’s address balance in the mapping.
+    // admin sends funds to treasury if player loses game
+    function playerLost(uint256 _gameId, address _player) onlyAdmin external returns(bool){
+        RetroToken token = RetroToken(tokenAddress);
+        token.transfer(balances[_player][_gameID].treasury, balances[_player][_gameID].amount);
 
-8. Test out your contract by deploying it and calling the functions that Remix exposes. Try minting some tokens for yourself, then sending them to another address!
+        balances[_player][_gameID].spent = true;
+        totalBalance -= balances[_player][_gameID].amount;
+        return true;
+    }
 
-*/
 
-// Construct your ArcadeToken contract below:
+        //external
+        //onlyAdmin
+        //returns (bool)
+    //{
+       // GameToken token = GameToken(tokenAddress);
+        // transfer to treasury the balance locked in escrow
+       // token.transfer(
+       //     balances[_player][_gameId].treasury,
+       //     balances[_player][_gameId].balance
+      //  );
+        // TODO: add post-transfer funcs to `_afterTokenTransfer` to validate transfer
+
+        // amend escrow balance
+       // contractBalance -= balances[_player][_gameId].balance;
+        // set game balance to spent
+       // balances[_player][_gameId].spent = true;
+       // return true;
+    //}
+
+    // player is able to withdraw unlocked tokens without admin if unlocked
+    function withdraw(uint256 _gameId) external returns (bool) {
+        require(
+            balances[msg.sender][_gameId].locked == false,
+            "This escrow is still locked"
+        );
+        require(
+            balances[msg.sender][_gameId].spent == false,
+            "Already withdrawn"
+        );
+
+        GameToken token = GameToken(tokenAddress);
+        // transfer to player of game (msg.sender) the value locked in escrow
+        token.transfer(msg.sender, balances[msg.sender][_gameId].amount);
+        // TODO: add post-transfer funcs to `_afterTokenTransfer` to validate transfer
+        // amend escrow balance
+        contractBalance -= balances[msg.sender][_gameId].balance;
+        // set game balance to spent
+        balances[msg.sender][_gameId].spent = true;
+        return true;
+    }
+}
+
+
