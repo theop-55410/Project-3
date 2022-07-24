@@ -2,7 +2,7 @@ import EnemyController from "./EnemyController.js";
 
 import Player from "./Player.js";
 import BulletController from "./BulletController.js";
-import {playerWon, playerLost} from "./btwo.js";
+import {playerWon(), playerLost()} from "./btwo.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
