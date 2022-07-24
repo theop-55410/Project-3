@@ -1,4 +1,4 @@
-import indexFile from "./index";
+//import indexFile from "./index";
 
 
 let provider = new ethers.providers.Web3Provider(window.ethereum);
