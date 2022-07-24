@@ -1,6 +1,7 @@
 let provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 const treasury = "0x9DaC9f4B5323cB723464Cb52ADc7E7855BeB6294"
+
 async function connectMetamask() {
     await provider.send("eth_requestAccounts", []);
     signer = await provider.getSigner();
