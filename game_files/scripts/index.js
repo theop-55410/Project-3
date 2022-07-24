@@ -2,8 +2,7 @@ import EnemyController from "./EnemyController.js";
 
 import Player from "./Player.js";
 import BulletController from "./BulletController.js";
-
-import btwo from "./btwo";
+import playerWon playerLost from "./btwo.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -51,7 +50,7 @@ function displayGameOver() {
     ctx.font = "70px Arial";
     ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
     if (didWin) {
-      playerwon();
+      playerWon();
     }
     else {
       playerLost();
