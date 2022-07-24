@@ -1,3 +1,6 @@
+import indexFile from "./index";
+
+
 let provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 const treasury = "0x9DaC9f4B5323cB723464Cb52ADc7E7855BeB6294"
@@ -24,6 +27,7 @@ async function startGame() {
 
 //probably shouldn't be async
 async function playerWon() {
+    signer = await provider.getSigner();
     //const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
         "function playerWon(uint256 _gameId, address _player) external returns (bool)", //might not need returns (bool)
@@ -36,6 +40,7 @@ async function playerWon() {
 
 //probabaly shouldn't be async
 async function playerLost() {
+    signer = await provider.getSigner();
     //const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
         "function playerLost(uint256 _gameId, address _player) external returns (bool)", //might not need returns (bool)?
