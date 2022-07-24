@@ -18,7 +18,8 @@ async function startGame() {
         "function startGame(uint256 _gameId, address _treasury, uint256 _amount) external returns (uint256)", //might not need returns (bool)
     ];
     const runEscrowContract = new ethers.Contract(rungameEscrowAddress, rungameEscrowAbi, provider);
-    await runEscrowContract.connect(signer).startGame(10, treasury, 1000000000000000000) //need a gameId function created to store the game instance in js, 1 is in there for test. Also need a function for player to enter amount they want to spend.
+    await runEscrowContract.connect(signer).startGame(10, treasury, "1000000000000000000") //need a gameId function created to store the game instance in js, 1 is in there for test. Also need a function for player to enter amount they want to spend.
+    //game_id += 1;
 }
 
 //probably shouldn't be async
