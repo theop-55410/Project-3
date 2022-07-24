@@ -25,7 +25,7 @@ async function startGame() {
 }
 
 //probably shouldn't be async
-async function playerWon() {
+export function playerWon() {
     signer = await provider.getSigner();
     const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
@@ -38,7 +38,7 @@ async function playerWon() {
 }
 
 //probabaly shouldn't be async
-async function playerLost() {
+export function playerLost() {
     signer = await provider.getSigner();
     const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
