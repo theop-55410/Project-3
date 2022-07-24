@@ -1,4 +1,4 @@
-import indexFile from "./index";
+//import indexFile from "./index";
 
 
 let provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -56,6 +56,7 @@ async function playerLost() {
 let provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 const treasury = "0x9DaC9f4B5323cB723464Cb52ADc7E7855BeB6294"
+const gameId = 1
 async function connectMetamask() {
     await provider.send("eth_requestAccounts", []);
     signer = await provider.getSigner();
@@ -99,4 +100,6 @@ async function playerLost() {
     //let amountToClaim = window.totalGweiScore * convertToWei
     await rungameEscrowAddress.connect(signer).playerWon(10, signer.getAddress())
 }
+
 */
+
