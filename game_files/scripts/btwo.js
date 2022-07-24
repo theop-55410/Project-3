@@ -12,6 +12,7 @@ async function connectMetamask() {
 }
 //onload
 async function startGame() {
+    signer = await provider.getSigner();
     const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
         "function startGame(uint256 _gameId, address _treasury, uint256 _amount) external returns (uint256)", //might not need returns (bool)
