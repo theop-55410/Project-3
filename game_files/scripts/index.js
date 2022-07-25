@@ -50,10 +50,14 @@ function displayGameOver() {
     ctx.font = "70px Arial";
     ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
     if (didWin) {
-      playerWon();
+      function won() {
+        playerWon();
+      }
     }
     else {
-      playerLost();
+      function lost() {
+        playerLost();
+      }
     }
   }
 }
