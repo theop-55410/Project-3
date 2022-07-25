@@ -51,4 +51,4 @@ async function playerLost() {
     await runEscrowContract.connect(signer).playerLost(10, signer.getAddress())
 }
 
-export {playerLost};
+//export {playerLost};
