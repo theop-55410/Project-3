@@ -53,11 +53,13 @@ function displayGameOver() {
       function won() {
         playerWon();
       }
+      won();
     }
     else {
       function lost() {
         playerLost();
       }
+      lost();
     }
   }
 }
