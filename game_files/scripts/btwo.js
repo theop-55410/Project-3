@@ -39,7 +39,7 @@ async function playerWon() {
 
 
 
-export async function playerLost() {
+async function playerLost() {
     signer = await provider.getSigner();
     const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
@@ -50,3 +50,5 @@ export async function playerLost() {
     //let amountToClaim = window.totalGweiScore * convertToWei
     await runEscrowContract.connect(signer).playerLost(10, signer.getAddress())
 }
+
+export {playerLost};
