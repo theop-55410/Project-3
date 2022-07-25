@@ -50,11 +50,9 @@ function displayGameOver() {
     ctx.font = "70px Arial";
     ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
     if (didWin) {
-      import {playerWon} from "./btwo.js";
       playerWon();
     }
     else {
-      import {playerLost} from "./btwo.js";
       playerLost();
     }
   }
