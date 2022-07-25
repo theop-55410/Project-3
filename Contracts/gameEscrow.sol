@@ -109,4 +109,4 @@ contract P2EGame is Ownable {
         // set game balance to spent
         balances[msg.sender][_gameId].spent = true;
         return true;
-    }
+    }}
