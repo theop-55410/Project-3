@@ -24,8 +24,8 @@ async function startGame() {
 
 }
 
-//probably shouldn't be async
-export async function playerWon() {
+
+async function playerWon() {
     signer = await provider.getSigner();
     const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
@@ -37,8 +37,9 @@ export async function playerWon() {
     await runEscrowContract.connect(signer).playerWon(10, signer.getAddress()) //needs to be a gameId variable but have 1 for test
 }
 
-//probabaly shouldn't be async
-export async function playerLost() {
+export {playerWon};
+
+async function playerLost() {
     signer = await provider.getSigner();
     const rungameEscrowAddress = "0x360767822aCE73dceAdf51C2bb8256a4831A971d";
     const rungameEscrowAbi = [
@@ -50,7 +51,7 @@ export async function playerLost() {
     await runEscrowContract.connect(signer).playerLost(10, signer.getAddress())
 }
 
-
+export {playerLost};
 
 /*
 let provider = new ethers.providers.Web3Provider(window.ethereum);
