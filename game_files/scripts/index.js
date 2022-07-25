@@ -81,3 +81,4 @@ function checkGameOver() {
 }
 
 setInterval(game, 1000 / 60);
+}
