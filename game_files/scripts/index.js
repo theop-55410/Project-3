@@ -57,9 +57,11 @@ function displayGameOver() {
     else {
       function lost() {
         playerLost();
+      }
     }
   }
 }
+
 
 function checkGameOver() {
   if (isGameOver) {
@@ -81,4 +83,3 @@ function checkGameOver() {
 }
 
 setInterval(game, 1000 / 60);
-}
