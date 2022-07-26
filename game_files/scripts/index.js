@@ -30,6 +30,7 @@ const player = new Player(canvas, 3, playerBulletController);
 
 let isGameOver = false;
 let didWin = false;
+let playerPayout = true;
 
 function game() {
   checkGameOver();
@@ -41,6 +42,9 @@ function game() {
     playerBulletController.draw(ctx);
     enemyBulletController.draw(ctx);
   }
+  if (isGameOver && playerPayout) {
+    payout();
+  }
 }
 
 function displayGameOver() {
@@ -51,14 +55,6 @@ function displayGameOver() {
     ctx.fillStyle = "white";
     ctx.font = "70px Arial";
     ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
-    if (didWin) {
-      playerWon();
-      return;
-      }
-    else {
-      playerLost();
-      return;
-    }
   }
 }
 
@@ -79,6 +75,17 @@ function checkGameOver() {
   if (enemyController.enemyRows.length === 0) {
     didWin = true;
     isGameOver = true;
+  }
+}
+
+async function payout() {
+  if (didWin) {
+    playerWon();
+    playerPayout = false;
+    }
+  else {
+    playerLost();
+    playerPayout = false;
   }
 }
 

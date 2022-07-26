@@ -24,7 +24,7 @@ export async function playerLost() {
     const rungameEscrowAbi = [
         "function playerLost(uint256 _gameId, address _player) external returns (bool)", //might not need returns (bool)?
     ];
-    const runEscrowContract = new ethers.Contract(rungameEscrowAddress, rungameEscrowAbi, provider);
+    const runEscrowContract = await new ethers.Contract(rungameEscrowAddress, rungameEscrowAbi, provider);
     //let convertToWei = 1000000000
     //let amountToClaim = window.totalGweiScore * convertToWei
     await runEscrowContract.connect(signer).playerLost(10, signer.getAddress())
