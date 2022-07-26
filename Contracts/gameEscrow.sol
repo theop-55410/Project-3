@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./gametoken.sol";
+import "gametoken.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract P2EGame is Ownable {
    
     address admin;
+    uint256 constant _gameId = 1;
    
     uint256 public totalBalance;
     // this is the erc20 gametoken contract address
-    address constant tokenAddress = 0xa92d2502Bd3b5c80D60f65c21a1e0E3A4213da3B; // <-- INSERT DEPLYED ERC20 TOKEN CONTRACT HERE
+    address constant tokenAddress = 0x65E094c43b1059764Df44a0d50768f9F26B9E0c5; // <-- INSERT DEPLYED ERC20 TOKEN CONTRACT HERE
     
     // game data tracking
     struct Game {
@@ -22,28 +23,14 @@ contract P2EGame is Ownable {
     }
     // map game to balances
     mapping(address => mapping(uint256 => Game)) public balances;
-    // set-up event for emitting once character minted to read out values
-    //event NewGame(uint256 id, address indexed player);
 
-    // only admin account can unlock escrow
-    modifier onlyAdmin {
-        require(msg.sender == admin, "Only admin can unlock escrow.");
-        _;
-    }
-
-    /**
-     * @dev Grants `DEFAULT_ADMIN_ROLE`, `MINTER_ROLE` and `PAUSER_ROLE` to the
-     * account that deploys the contract.
-     *
-     * See {ERC20-constructor}.
-     */
     constructor() {
         admin = msg.sender;
        
     }
 
     // retrieve current state of game funds in escrow
-    function startGame(uint256 _gameId, address _treasury, uint256 _amount) external returns (uint256) {
+    function startGame(address _treasury, uint256 _amount) external returns (uint256) {
         gametoken token = gametoken(tokenAddress);
         //approve contract to spend amount tokens
         require(token.approve(address(this), _amount), "P2EGame: approval has failed");
@@ -59,14 +46,14 @@ contract P2EGame is Ownable {
         return token.balanceOf(msg.sender);
     }
 
-    function gameState(address _player, uint256 _gameId) external view returns (uint256, bool, address) {
+    function gameState(address _player) external view returns (uint256, bool, address) {
         return ( balances [_player][_gameId].amount, balances[_player][_gameId].locked, balances[_player][_gameId].treasury );
     }
         
    
 
     // admin unlocks tokens in escrow once game's outcome decided
-    function playerWon(uint256 _gameId, address _player) onlyAdmin external returns (bool) {
+    function playerWon(address _player) external returns (bool) {
         balances[_player][_gameId].locked = false;
 
              
@@ -80,7 +67,7 @@ contract P2EGame is Ownable {
 
 
     // admin sends funds to treasury if player loses game
-    function playerLost(uint256 _gameId, address _player) onlyAdmin external returns(bool){
+    function playerLost(address _player) external returns(bool){
         gametoken token = gametoken(tokenAddress);
         token.transfer(balances[_player][_gameId].treasury, balances[_player][_gameId].amount);
 
@@ -90,7 +77,7 @@ contract P2EGame is Ownable {
     }
 
     // player is able to withdraw unlocked tokens without admin if unlocked
-    function withdraw(uint256 _gameId) external returns (bool) {
+    function withdraw() external returns (bool) {
         require(
             balances[msg.sender][_gameId].locked == false,
             "This escrow is still locked"
@@ -110,5 +97,4 @@ contract P2EGame is Ownable {
         balances[msg.sender][_gameId].spent = true;
         return true;
     }
- 
 }
