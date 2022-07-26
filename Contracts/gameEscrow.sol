@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "gametoken.sol";
+import "./gametoken.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract P2EGame is Ownable {
@@ -10,7 +10,7 @@ contract P2EGame is Ownable {
    
     uint256 public totalBalance;
     // this is the erc20 gametoken contract address
-    address constant tokenAddress = 0xe84aCEd9208FfddAD174748D5F57E033A47371de; // <-- INSERT DEPLYED ERC20 TOKEN CONTRACT HERE
+    address constant tokenAddress = 0xa92d2502Bd3b5c80D60f65c21a1e0E3A4213da3B; // <-- INSERT DEPLYED ERC20 TOKEN CONTRACT HERE
     
     // game data tracking
     struct Game {
@@ -26,10 +26,10 @@ contract P2EGame is Ownable {
     //event NewGame(uint256 id, address indexed player);
 
     // only admin account can unlock escrow
-    //modifier onlyAdmin {
-    //    require(msg.sender == admin, "Only admin can unlock escrow.");
-    //    _;
-    //}
+    modifier onlyAdmin {
+        require(msg.sender == admin, "Only admin can unlock escrow.");
+        _;
+    }
 
     /**
      * @dev Grants `DEFAULT_ADMIN_ROLE`, `MINTER_ROLE` and `PAUSER_ROLE` to the
@@ -66,7 +66,7 @@ contract P2EGame is Ownable {
    
 
     // admin unlocks tokens in escrow once game's outcome decided
-    function playerWon(uint256 _gameId, address _player) external returns (bool) {
+    function playerWon(uint256 _gameId, address _player) onlyAdmin external returns (bool) {
         balances[_player][_gameId].locked = false;
 
              
@@ -80,7 +80,7 @@ contract P2EGame is Ownable {
 
 
     // admin sends funds to treasury if player loses game
-    function playerLost(uint256 _gameId, address _player) external returns(bool){
+    function playerLost(uint256 _gameId, address _player) onlyAdmin external returns(bool){
         gametoken token = gametoken(tokenAddress);
         token.transfer(balances[_player][_gameId].treasury, balances[_player][_gameId].amount);
 
@@ -109,4 +109,6 @@ contract P2EGame is Ownable {
         // set game balance to spent
         balances[msg.sender][_gameId].spent = true;
         return true;
-    }}
+    }
+ 
+}
