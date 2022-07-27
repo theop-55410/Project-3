@@ -3,9 +3,9 @@ let signer;
 
 
 //Insert escrow wallet address, escrow contract address, and token address
-const treasury = "0x9DaC9f4B5323cB723464Cb52ADc7E7855BeB6294";
-const rungameEscrowAddress = "0x9BdcD676B18218e6Acf9A789008E2EC288192332";
-const tokenAddress = "0x734dAE634902BD7251Cc129f274aC0248DC7B5E6";
+const treasury = "0xD82bdAd2D17cAb4913e53dde841dc2b3B6DaD2c1";
+const rungameEscrowAddress = "00xf8122e9Bfc18fB711e09afAbDaD4ee19f0f812FB";
+const tokenAddress = "0xe3fb96A18Ba98876224f964CaD325A87252d67b1";
 
 async function connectMetamask() {
     await provider.send("eth_requestAccounts", []);

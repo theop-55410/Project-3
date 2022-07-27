@@ -1,7 +1,7 @@
 let provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 
-const rungameEscrowAddress = "0x9BdcD676B18218e6Acf9A789008E2EC288192332";
+const rungameEscrowAddress = "00xf8122e9Bfc18fB711e09afAbDaD4ee19f0f812FB";
 
 
 export async function playerWon() {
