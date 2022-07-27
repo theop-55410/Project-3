@@ -38,6 +38,9 @@ Our group created the ability to play a retro arcade game, Space Invaders, using
 ### Executing the game (via Live Server) with a view of the code:
 ![liveserver](https://github.com/theop-55410/Project-3/blob/main/Screenshots/Front_end.png)
 
+### Game in action 
+![Screenshot 2022-07-26 162451](https://user-images.githubusercontent.com/99453114/181157225-79485970-a0d8-45a4-8e73-59e5a22266fb.png)
+
 
 ## Technologies
 
