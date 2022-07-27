@@ -1,11 +1,11 @@
 let provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
-const treasury = "0x9DaC9f4B5323cB723464Cb52ADc7E7855BeB6294"
+
+const rungameEscrowAddress = "0x9BdcD676B18218e6Acf9A789008E2EC288192332";
 
 
 export async function playerWon() {
     signer = await provider.getSigner();
-    const rungameEscrowAddress = "0x745509E7ffEC3C64cEF423785CcaD3DF11e1275E";
     const rungameEscrowAbi = [
         "function playerWon(address _player) external returns (bool)", //might not need returns (bool)
     ];
@@ -19,9 +19,8 @@ export async function playerWon() {
 
 export async function playerLost() {
     signer = await provider.getSigner();
-    const rungameEscrowAddress = "0x745509E7ffEC3C64cEF423785CcaD3DF11e1275E";
     const rungameEscrowAbi = [
-        "function playerLost(address _player) external returns (bool)", //might not need returns (bool)?
+        "function playerLost(address _player) external returns (bool)",
     ];
     const runEscrowContract = await new ethers.Contract(rungameEscrowAddress, rungameEscrowAbi, provider);
     //let convertToWei = 1000000000

@@ -7,17 +7,29 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>Initiate and Start Game:</h1>
     <ul>
-        <button><a href="index.html">Space Invaders</a></button>
+        <button class="button1" onclick="startGame()">Initiate Game (Wager One Token)</button>
         
     </ul>
 
-    <button class="button1" onclick="startGame()">startGame</button>
-    <button class="button2" onclick="connectMetamask()">connect Metamask</button>
+    <ul>
+    <button><a href="index.html">Start Game</a></button>
+    </ul>
+    
+    <h1>First Time Users:</h1>
+    
+    <ul>
+    <button class="button2" onclick="connectMetamask()">Connect Metamask</button>
+    </ul>
 
+    <ul>
+    <button class="button2" onclick="approveToken()">Approve Token</button>
+    </ul>    
+    
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
     type="application/javascript"></script>
 
-    <script src="../scripts/btwo.js"></script>
+    <script src="../scripts/blockchain.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "gametoken.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract P2EGame is Ownable {
+contract escrow is Ownable {
    
     address admin;
     uint256 constant _gameId = 1;
@@ -33,8 +33,8 @@ contract P2EGame is Ownable {
     function startGame(address _treasury, uint256 _amount) external returns (uint256) {
         gametoken token = gametoken(tokenAddress);
         //approve contract to spend amount tokens
-        require(token.approve(address(this), _amount), "P2EGame: approval has failed");
-        require(_amount >= 1000000000000000000, "P2EGame: must insert 1 whole token");
+        require(token.approve(address(this), _amount), "Escrow: approval has failed");
+        require(_amount >= 1000000000000000000, "Escrow: must insert 1 whole token");
         token.transferFrom(msg.sender, address(this), _amount);
 
         totalBalance += _amount;
@@ -50,7 +50,9 @@ contract P2EGame is Ownable {
         return ( balances [_player][_gameId].amount, balances[_player][_gameId].locked, balances[_player][_gameId].treasury );
     }
         
-   
+   //function gameDetails() external returns (address, address) {
+   //}
+
 
     // admin unlocks tokens in escrow once game's outcome decided
     function playerWon(address _player) external returns (bool) {
