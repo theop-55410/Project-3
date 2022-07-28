@@ -41,6 +41,10 @@ Our group created the ability to play a retro arcade game, Space Invaders, using
 ### Game in action 
 ![Screenshot 2022-07-26 162451](https://user-images.githubusercontent.com/99453114/181157225-79485970-a0d8-45a4-8e73-59e5a22266fb.png)
 
+### Demo of the contract deployment and gaming action of player winning and losing to view the token exchange.
+
+https://user-images.githubusercontent.com/99453114/181435508-556bd9a6-8f70-47a0-b239-a247b288b208.mp4
+
 
 ## Technologies
 
